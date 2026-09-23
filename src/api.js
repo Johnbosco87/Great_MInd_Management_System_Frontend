@@ -15,8 +15,8 @@ export const createTeacher = (data) => api.post("teachers/", data);
 export const getCourses = () => api.get("courses/");
 export const createCourse = (data) => api.post("courses/", data);
 
-export const getAttendance = () => api.get("attendances/");
-export const createAttendance = (data) => api.post("attendances/", data);
+export const getAttendance = () => api.get("attendance/");
+export const createAttendance = (data) => api.post("attendance/", data);
 
 export const getRecords = () => api.get("academic-records/");
 export const createRecord = (data) => api.post("academic-records/", data);

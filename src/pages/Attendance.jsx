@@ -15,8 +15,8 @@ function Attendance() {
   const [courses, setCourses] = useState([]);
 
   const [form, setForm] = useState({
-    student: "",
-    course: "",
+    students: "",
+    courses: "",
     date: new Date().toISOString().slice(0, 10),
     status: "present",
   });
@@ -32,12 +32,26 @@ function Attendance() {
   }, []);
 
   const submit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    await createAttendance(form);
+  try {
+    console.log("ATTENDANCE BEING SENT:", form);
+
+    const response = await createAttendance(form);
+
+    console.log("ATTENDANCE SAVED:", response.data);
+
+    alert("Attendance recorded successfully!");
 
     load();
-  };
+
+  } catch (error) {
+    console.error("ERROR SAVING ATTENDANCE:", error);
+    console.error("SERVER RESPONSE:", error.response?.data);
+
+    alert("Failed to record attendance.");
+  }
+};
 
   return (
     <Resource title="Attendance">
@@ -45,11 +59,11 @@ function Attendance() {
       <form onSubmit={submit} className="form-grid">
 
         <select
-          value={form.student}
+          value={form.students}
           onChange={(e) =>
             setForm({
               ...form,
-              student: e.target.value,
+              students: e.target.value,
             })
           }
           required
@@ -64,11 +78,11 @@ function Attendance() {
         </select>
 
         <select
-          value={form.course}
+          value={form.courses}
           onChange={(e) =>
             setForm({
               ...form,
-              course: e.target.value,
+              courses: e.target.value,
             })
           }
           required

@@ -15,46 +15,65 @@ function Records() {
   const [courses, setCourses] = useState([]);
 
   const [form, setForm] = useState({
-    student: "",
-    course: "",
+    students: "",
+    courses: "",
     session: "2026/2027",
     term: "First",
     ca_score: 0,
     exam_score: 0,
   });
 
-  const load = () => {
-    getRecords().then((r) => setItems(r.data));
-    getStudents().then((r) => setStudents(r.data));
-    getCourses().then((r) => setCourses(r.data));
-  };
+  const load = async () => {
+  try {
+    const recordsResponse = await getRecords();
+    const studentsResponse = await getStudents();
+    const coursesResponse = await getCourses();
+
+    console.log("RECORDS FROM DJANGO:", recordsResponse.data);
+    console.log("STUDENTS FROM DJANGO:", studentsResponse.data);
+    console.log("COURSES FROM DJANGO:", coursesResponse.data);
+
+    setItems(recordsResponse.data);
+    setStudents(studentsResponse.data);
+    setCourses(coursesResponse.data);
+  } catch (error) {
+    console.error("Error loading data:", error);
+    console.error("Server response:", error.response?.data);
+  }
+};
 
   useEffect(() => {
     load();
   }, []);
 
- const submit = async (e) => {
-    e.preventDefault();
+const submit = async (e) => {
+  e.preventDefault();
 
-    try {
-        await createRecord({
-            ...form,
-            ca_score: Number(form.ca_score),
-            exam_score: Number(form.exam_score),
-        });
+  try {
+    const data = {
+      ...form,
+      ca_score: Number(form.ca_score),
+      exam_score: Number(form.exam_score),
+    };
 
-        alert("Record saved successfully!");
+    console.log("SENDING RECORD:", data);
 
-        // Get the records again from Django
-        const response = await getRecords();
-        setItems(response.data);
+    await createRecord(data);
 
-    } catch (error) {
-        console.error("Error saving record:", error);
-        console.error("Server response:", error.response?.data);
+    alert("Record saved successfully!");
 
-        alert("Failed to save record.");
-    }
+    const response = await getRecords();
+
+    console.log("RECORDS AFTER SAVING:", response.data);
+
+    setItems(response.data);
+
+  } catch (error) {
+    console.error("Error saving record:", error);
+    console.error("Server response:", error.response?.data);
+
+    alert("Failed to save record.");
+  }
 };
 
   return (
@@ -63,11 +82,11 @@ function Records() {
       <form onSubmit={submit} className="form-grid">
 
         <select
-          value={form.student}
+          value={form.students}
           onChange={(e) =>
             setForm({
               ...form,
-              student: e.target.value,
+              students: e.target.value,
             })
           }
           required
@@ -82,11 +101,11 @@ function Records() {
         </select>
 
         <select
-          value={form.course}
+          value={form.courses}
           onChange={(e) =>
             setForm({
               ...form,
-              course: e.target.value,
+              courses: e.target.value,
             })
           }
           required

@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function Layout({ children }) {
+   const [darkMode, setDarkMode] = useState(false);
   return (
-    <div className="app">
-      <aside>
+    <div className={darkMode ? "app dark" : "app"}>
+  
+     <aside>
+      <div className="logo">
         <h2>Great Mind</h2>
-
+        <button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "☀️ " : "🌙"}
+        </button>
+     </div> 
         <nav>
           <Link to="/">Dashboard</Link>
           <Link to="/students">Students</Link>
@@ -14,6 +21,7 @@ function Layout({ children }) {
           <Link to="/attendance">Attendance</Link>
           <Link to="/records">Academic Records</Link>
         </nav>
+         
       </aside>
 
       <main>{children}</main>

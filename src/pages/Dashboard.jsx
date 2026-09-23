@@ -1,18 +1,66 @@
 import { useEffect, useState } from "react";
-import { getDashboard } from "../api";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+import { getDashboard, getAttendance } from "../api";
 import Card from "../components/Card.jsx";
 
 function Dashboard() {
   const [data, setData] = useState({});
+  const [attendanceData, setAttendanceData] = useState([]);
 
   useEffect(() => {
+    // Get dashboard information
     getDashboard().then((r) => setData(r.data));
+
+    // Get attendance information
+    getAttendance()
+      .then((r) => {
+        const attendance = r.data;
+
+        // Store attendance for each student
+        const students = {};
+
+        attendance.forEach((record) => {
+          const studentName = record.student_name;
+
+          if (!students[studentName]) {
+            students[studentName] = {
+              student: studentName,
+              present: 0,
+              absent: 0,
+            };
+          }
+
+          if (record.status === "Present") {
+            students[studentName].present += 1;
+          }
+
+          if (record.status === "Absent") {
+            students[studentName].absent += 1;
+          }
+        });
+
+        setAttendanceData(Object.values(students));
+      })
+      .catch((error) => {
+        console.error("Error loading attendance:", error);
+      });
   }, []);
 
   return (
     <>
       <h1>Dashboard</h1>
 
+      {/* Dashboard Cards */}
       <div className="cards">
         <Card
           title="Students"
@@ -38,6 +86,41 @@ function Dashboard() {
           title="Academic Records"
           value={data.academic_records ?? 0}
         />
+      </div>
+
+      {/* Attendance Graph */}
+      <div
+        style={{
+          width: "100%",
+          height: "400px",
+          marginTop: "40px",
+        }}
+      >
+        <h2>Student Attendance</h2>
+
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={attendanceData}>
+            <CartesianGrid strokeDasharray="3 3" />
+
+            <XAxis dataKey="student" />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Legend />
+
+            <Bar
+              dataKey="present"
+              name="Present"
+            />
+
+            <Bar
+              dataKey="absent"
+              name="Absent"
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </>
   );
