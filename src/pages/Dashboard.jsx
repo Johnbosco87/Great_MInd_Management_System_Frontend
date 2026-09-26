@@ -19,37 +19,58 @@ function Dashboard() {
 
   useEffect(() => {
     // Get dashboard information
-    getDashboard().then((r) => setData(r.data));
+    getDashboard()
+      .then((r) => {
+        setData(r.data);
+      })
+      .catch((error) => {
+        console.error("Error loading dashboard:", error);
+      });
 
     // Get attendance information
     getAttendance()
       .then((r) => {
         const attendance = r.data;
 
-        // Store attendance for each student
+        console.log("Attendance data from Django:", attendance);
+
         const students = {};
 
         attendance.forEach((record) => {
           const studentName = record.student_name;
+
+          if (!studentName) {
+            return;
+          }
 
           if (!students[studentName]) {
             students[studentName] = {
               student: studentName,
               present: 0,
               absent: 0,
+              late: 0,
             };
           }
 
-          if (record.status === "Present") {
+          // Django uses lowercase status values
+          if (record.status === "present") {
             students[studentName].present += 1;
           }
 
-          if (record.status === "Absent") {
+          if (record.status === "absent") {
             students[studentName].absent += 1;
+          }
+
+          if (record.status === "late") {
+            students[studentName].late += 1;
           }
         });
 
-        setAttendanceData(Object.values(students));
+        const chartData = Object.values(students);
+
+        console.log("Chart data:", chartData);
+
+        setAttendanceData(chartData);
       })
       .catch((error) => {
         console.error("Error loading attendance:", error);
@@ -98,7 +119,7 @@ function Dashboard() {
       >
         <h2>Student Attendance</h2>
 
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="90%">
           <BarChart data={attendanceData}>
             <CartesianGrid strokeDasharray="3 3" />
 
@@ -118,6 +139,11 @@ function Dashboard() {
             <Bar
               dataKey="absent"
               name="Absent"
+            />
+
+            <Bar
+              dataKey="late"
+              name="Late"
             />
           </BarChart>
         </ResponsiveContainer>

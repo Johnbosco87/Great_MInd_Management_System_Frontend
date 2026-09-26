@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* { 
+  box-sizing: border-box; 
+}
 body { margin: 0; 
   font-family: Inter, Arial, sans-serif; 
   background: #f5f7fb; 
@@ -8,12 +10,14 @@ body { margin: 0;
   min-height: 100vh; 
   display: flex; 
 }
+
 .logo{
   display:flex;
       display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 button {
     background: #07183a;
     color: white;
@@ -21,17 +25,32 @@ button {
     cursor: pointer;
     margin-bottom: 28px;
 }
+
+button:hover{
+  color:#4c83f2;
+  background-color: whitesmoke;
+}
+
 aside { 
+  display:flex;
+  flex-direction:column;
+  align-content: space-between;
+  justify-content: space-between;
   width: 240px;
   background: #597fd1; 
   color: white; 
-  padding: 28px 18px; }
+  padding: 28px 18px;
+ }
+
 aside h2 { 
   margin: 0 0 28px;
  }
+
 nav { 
   display: grid;
-   gap: 8px; }
+   gap: 8px; 
+  }
+
 nav a { 
   color: #dbe2ef; 
   text-decoration: none; 
@@ -42,11 +61,126 @@ nav a:hover {
   background: #26324a; 
   color: white; 
 }
+
+.app.dark {
+  background: #1e1e1e;
+  color: rgb(21, 11, 11);
+}
+
+/* =========================
+   NORMAL MODE
+========================= */
+
+.app {
+  background-color: #ffffff;
+  color: #222222;
+  min-height: 100vh;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+.app.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Main content */
+.app.dark main {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Sidebar */
+.app.dark aside {
+  background-color: #122669;
+  color: #ffffff;
+}
+
+/* Headings */
+.app.dark h1,
+.app.dark h2,
+.app.dark h3,
+.app.dark h4,
+.app.dark h5,
+.app.dark h6 {
+  color: #ffffff;
+}
+
+/* Paragraphs */
+.app.dark p {
+  color: #dddddd;
+}
+
+/* Links */
+.app.dark a {
+  color: #ffffff;
+}
+
+/* Cards */
+.app.dark .card {
+  background-color: #1e1e1e;
+  color: white;
+  border-color: #444444;
+}
+
+/* Tables */
+.app.dark table {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.app.dark th {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.app.dark td {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+/* Inputs */
+.app.dark input,
+.app.dark select,
+.app.dark textarea {
+  background-color: #222222;
+  color: #ffffff;
+  border: 1px solid #555555;
+}
+
+/* Placeholder text */
+.app.dark input::placeholder,
+.app.dark textarea::placeholder {
+  color: #aaaaaa;
+}
+
+/* Buttons */
+.app.dark button {
+  background-color: #ffffff;
+  color: #121212;
+  border: 1px solid #ffffff;
+}
+
+/* Navigation */
+.app.dark nav a {
+  color: #ffffff;
+}
+
+/* Logo */
+.app.dark .logo h2 {
+  color: #ffffff;
+}
+
 main { 
   flex: 1; 
   padding: 36px; 
   overflow-x: auto; 
 }
+
 h1 { 
   margin-top: 0;
  }
@@ -54,6 +188,7 @@ h1 {
   display: grid; 
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
   gap: 18px; }
+
 .card { 
   background: white; 
   padding: 22px; 
@@ -77,18 +212,21 @@ h1 {
    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
    gap: 12px; 
   }
+
 input, select, button { 
   padding: 11px 12px; 
   border: 1px solid #d7dce5; 
   border-radius: 7px; 
   font: inherit; 
 }
+
 button {
  background: #2f6fed; 
  color: white; 
  border: 0; 
  cursor: pointer; 
 }
+
 button:hover { 
   opacity: .9; 
 }
@@ -131,8 +269,4 @@ th {
   main { 
     padding: 20px; 
   }
-}
-.app.dark {
-  background: #1e1e1e;
-  color: rgb(21, 11, 11);
 }
