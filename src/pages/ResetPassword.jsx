@@ -25,7 +25,7 @@ function ResetPassword() {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/reset-password/${uid}/${token}/`,
+        `https://schoolsystem-tpvl.onrender.com/api/reset-password/${uid}/${token}/`,
         {
           password: password,
         }

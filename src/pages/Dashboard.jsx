@@ -134,16 +134,19 @@ function Dashboard() {
             <Bar
               dataKey="present"
               name="Present"
+              fill="#22c55e"
             />
 
             <Bar
               dataKey="absent"
               name="Absent"
+              fill="#ef4444"
             />
 
             <Bar
               dataKey="late"
               name="Late"
+              fill="#f59e0b"
             />
           </BarChart>
         </ResponsiveContainer>
